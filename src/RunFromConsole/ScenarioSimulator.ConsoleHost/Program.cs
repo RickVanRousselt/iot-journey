@@ -15,6 +15,11 @@ namespace Microsoft.Practices.IoTJourney.ScenarioSimulator.ConsoleHost
     {
         private static void Main(string[] args)
         {
+            AsyncPump.Run(() => MainAsync(args));
+        }
+
+        private static async Task MainAsync(string[] args)
+        {
             var observableEventListener = new ObservableEventListener();
 
             observableEventListener.EnableEvents(
@@ -32,7 +37,7 @@ namespace Microsoft.Practices.IoTJourney.ScenarioSimulator.ConsoleHost
                     scenario => "Run " + scenario,
                     scenario => (Func<CancellationToken, Task>)(token => deviceSimulator.RunSimulationAsync(scenario, token)));
 
-            Tests.Common.ConsoleHost.WithOptions(options);
+            await Tests.Common.ConsoleHost.RunWithOptionsAsync(options);
         }
     }
 }
